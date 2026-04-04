@@ -46,9 +46,17 @@ pip install -r requirements.txt
 
 cp .env.example .env
 # Edit .env and paste your Hugging Face token
-
-python generate.py "a flat illustration of a merchant reviewing analytics on a tablet"
 ```
+
+```bash
+python generate.py "a flat illustration of a merchant reviewing analytics on a tablet"
+python generate.py "an isometric coffee shop with warm lighting" --output coffee.png
+```
+
+| Argument | Required | Description |
+|----------|----------|-------------|
+| `prompt` | Yes | Text description of the image to generate |
+| `--output`, `-o` | No | Output file path (default: `comparison.png`) |
 
 ### Option B: Run in Google Colab (no install needed)
 
@@ -106,18 +114,6 @@ plt.show()
 ```
 
 4. Change `PROMPT` to try different styles and subjects
-
-## Usage (local)
-
-```bash
-python generate.py "your prompt here"
-python generate.py "an isometric coffee shop with warm lighting" --output coffee.png
-```
-
-| Argument | Required | Description |
-|----------|----------|-------------|
-| `prompt` | Yes | Text description of the image to generate |
-| `--output`, `-o` | No | Output file path (default: `comparison.png`) |
 
 ## Models
 
