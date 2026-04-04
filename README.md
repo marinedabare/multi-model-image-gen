@@ -34,7 +34,22 @@ One prompt, three models, side-by-side comparison. All using the free Hugging Fa
 
 ## How to run
 
-### Option A: Run locally
+### Option A: Live demo on Hugging Face
+
+[![Open in Spaces](https://huggingface.co/datasets/huggingface/badges/resolve/main/open-in-hf-spaces-sm.svg)](https://huggingface.co/spaces/marinedabare/multi-model-image-gen)
+
+No setup, no token needed — just type a prompt and click Submit.
+
+### Option B: Run in Google Colab
+
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/marinedabare/multi-model-image-gen/blob/main/notebook.ipynb?flush_cache=true)
+
+1. Click the badge above to open the notebook in Colab
+2. Paste your Hugging Face token in the `HF_TOKEN` variable
+3. Run all cells — images appear side by side after ~1-2 minutes
+4. Change `PROMPT` to try different styles and subjects
+
+### Option C: Run locally
 
 ```bash
 git clone https://github.com/marinedabare/multi-model-image-gen.git
@@ -59,21 +74,6 @@ python generate.py "an isometric coffee shop with warm lighting" --output coffee
 | `--output`, `-o` | No | Output file path (default: `comparison.png`) |
 
 The output is a single image containing all 3 model results side by side, with the prompt displayed above.
-
-### Option B: Run in Google Colab (no install needed)
-
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/marinedabare/multi-model-image-gen/blob/main/notebook.ipynb?flush_cache=true)
-
-1. Click the badge above to open the notebook in Colab
-2. Paste your Hugging Face token in the `HF_TOKEN` variable
-3. Run all cells — images appear side by side after ~1-2 minutes
-4. Change `PROMPT` to try different styles and subjects
-
-### Option C: Try the live demo on Hugging Face
-
-[![Open in Spaces](https://huggingface.co/datasets/huggingface/badges/resolve/main/open-in-hf-spaces-sm.svg)](https://huggingface.co/spaces/marinedabare/multi-model-image-gen)
-
-No setup, no token needed — just type a prompt and click Submit.
 
 ## Models
 
