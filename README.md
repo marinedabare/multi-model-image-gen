@@ -26,6 +26,12 @@ Text prompt
 
 One prompt, three models, side-by-side comparison. All using the free Hugging Face Inference API.
 
+## Get a free Hugging Face token
+
+1. Go to [huggingface.co/settings/tokens](https://huggingface.co/settings/tokens)
+2. Sign up (free)
+3. Create a new token (read access is enough)
+
 ## Quick start
 
 ### Option A: Run locally
@@ -100,12 +106,6 @@ plt.show()
 ```
 
 4. Change `PROMPT` to try different styles and subjects
-
-## Get a free Hugging Face token
-
-1. Go to [huggingface.co/settings/tokens](https://huggingface.co/settings/tokens)
-2. Sign up (free)
-3. Create a new token (read access is enough)
 
 ## Usage (local)
 
