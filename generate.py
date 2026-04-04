@@ -71,7 +71,7 @@ def display_results(prompt: str, results: dict[str, Image.Image | str], output_p
         ax.axis("off")
 
     display_prompt = prompt[:120] + "..." if len(prompt) > 120 else prompt
-    fig.suptitle(f'Prompt: "{display_prompt}"', fontsize=11, y=0.99)
+    fig.suptitle(f'Prompt: "{display_prompt}"', fontsize=18, fontweight="bold", y=1.02)
     plt.tight_layout()
     plt.savefig(output_path, dpi=150, bbox_inches="tight")
     plt.show()
@@ -86,7 +86,7 @@ def main():
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
-  python generate.py "a flat illustration of a merchant reviewing analytics on a tablet"
+  python generate.py "a flat illustration of a merchant reviewing analytics on a tablet in a retail store"
   python generate.py "an isometric coffee shop with warm lighting, minimal style"
   python generate.py "a vector illustration of a team meeting" --output team.png
         """,

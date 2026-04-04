@@ -49,7 +49,7 @@ cp .env.example .env
 ```
 
 ```bash
-python generate.py "a flat illustration of a merchant reviewing analytics on a tablet"
+python generate.py "a flat illustration of a merchant reviewing analytics on a tablet in a retail store"
 python generate.py "an isometric coffee shop with warm lighting" --output coffee.png
 ```
 
@@ -77,7 +77,7 @@ import matplotlib.pyplot as plt
 HF_TOKEN = "paste-your-token-here"  # get one free at https://huggingface.co/settings/tokens
 HEADERS = {"Authorization": f"Bearer {HF_TOKEN}"}
 
-PROMPT = "a flat illustration of a merchant reviewing analytics on a tablet, minimal style, pastel colours, no text"
+PROMPT = "a flat illustration of a merchant reviewing analytics on a tablet in a retail store, minimal style, pastel colours, no text"
 
 models = {
     "Stable Diffusion XL": "stabilityai/stable-diffusion-xl-base-1.0",
@@ -109,6 +109,7 @@ for ax, (name, img) in zip(axes, valid.items()):
     ax.imshow(img)
     ax.set_title(name, fontsize=16)
     ax.axis("off")
+fig.suptitle(f'Prompt: "{PROMPT}"', fontsize=18, fontweight="bold", y=1.02)
 plt.tight_layout()
 plt.show()
 ```
