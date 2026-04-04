@@ -62,7 +62,7 @@ The output is a single image containing all 3 model results side by side, with t
 
 ### Option B: Run in Google Colab (no install needed)
 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/marinedabare/multi-model-image-gen/blob/main/notebook.ipynb)
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/marinedabare/multi-model-image-gen/blob/main/notebook.ipynb?flush_cache=true)
 
 1. Click the badge above to open the notebook in Colab
 2. Paste your Hugging Face token in the `HF_TOKEN` variable
