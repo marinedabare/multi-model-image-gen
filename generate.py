@@ -67,14 +67,14 @@ def display_results(prompt: str, results: dict[str, Image.Image | str], output_p
 
     for ax, (name, img) in zip(axes, valid.items()):
         ax.imshow(img)
-        ax.set_title(name, fontsize=16, fontweight="bold")
+        ax.set_title(name, fontsize=16)
         ax.axis("off")
 
     display_prompt = prompt[:120] + "..." if len(prompt) > 120 else prompt
-    fig.suptitle(f'Prompt: "{display_prompt}"', fontsize=18, fontweight="bold", y=1.02)
+    fig.suptitle(f'Prompt: {display_prompt}', fontsize=18, color="#1a73e8", fontweight="bold", y=1.05)
     plt.tight_layout()
     plt.savefig(output_path, dpi=150, bbox_inches="tight")
-    plt.show()
+    plt.close()
     print(f"\nSaved comparison to {output_path}")
 
 

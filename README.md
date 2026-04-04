@@ -79,7 +79,7 @@ import matplotlib.pyplot as plt
 HF_TOKEN = "paste-your-token-here"  # get one free at https://huggingface.co/settings/tokens
 HEADERS = {"Authorization": f"Bearer {HF_TOKEN}"}
 
-PROMPT = "a flat illustration of a smiling merchant reviewing analytics on a tablet in a retail store, minimal style, pastel colours, no text, no watermark"
+PROMPT = "a flat illustration of a smiling merchant reviewing analytics on a tablet in a retail store, minimal style, no text, no watermark"
 
 models = {
     "Stable Diffusion XL": "stabilityai/stable-diffusion-xl-base-1.0",
@@ -111,7 +111,7 @@ for ax, (name, img) in zip(axes, valid.items()):
     ax.imshow(img)
     ax.set_title(name, fontsize=16)
     ax.axis("off")
-fig.suptitle(f'Prompt: {PROMPT}', fontsize=18, fontweight="bold", y=1.02)
+fig.suptitle(f'Prompt: {PROMPT}', fontsize=18, color="#1a73e8", fontweight="bold", y=1.05)
 plt.tight_layout()
 plt.show()
 ```
