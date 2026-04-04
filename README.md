@@ -58,6 +58,8 @@ python generate.py "an isometric coffee shop with warm lighting" --output coffee
 | `prompt` | Yes | Text description of the image to generate |
 | `--output`, `-o` | No | Output file path (default: `comparison.png`) |
 
+The output is a single image containing all 3 model results side by side, with the prompt displayed above.
+
 ### Option B: Run in Google Colab (no install needed)
 
 1. Go to [colab.research.google.com](https://colab.research.google.com) and create a new notebook
