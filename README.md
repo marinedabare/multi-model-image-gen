@@ -85,6 +85,8 @@ No setup, no token needed — just type a prompt and click Submit.
 
 All models are accessed via the [Hugging Face Inference API](https://huggingface.co/docs/inference-providers) (free tier).
 
+> **Note:** The free Hugging Face API has a limited number of requests per day (~1,000 requests/day, so ~300 generations since each run calls 3 models). If you hit the limit, wait a few hours and try again.
+
 ## Tech stack
 
 - **Python 3.11+**
