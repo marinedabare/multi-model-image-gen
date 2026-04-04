@@ -27,6 +27,14 @@ IMAGE_MODELS = {
 }
 
 
+class AuthError(Exception):
+    pass
+
+
+class RateLimitError(Exception):
+    pass
+
+
 def generate_image(model_id: str, prompt: str, retries: int = 3) -> Image.Image | str:
     """Generate an image from a text prompt using a Hugging Face model."""
     if not HF_TOKEN:
@@ -41,6 +49,12 @@ def generate_image(model_id: str, prompt: str, retries: int = 3) -> Image.Image 
 
         if response.status_code == 200:
             return Image.open(io.BytesIO(response.content))
+
+        if response.status_code == 401:
+            raise AuthError("Invalid token. Check your HF_TOKEN in .env file.")
+
+        if response.status_code == 402:
+            raise RateLimitError("Free API limit reached. Try again later.")
 
         if response.status_code == 503:
             wait = response.json().get("estimated_time", 30)
@@ -101,16 +115,23 @@ Examples:
     print(f"\nPrompt: {args.prompt}\n")
 
     results = {}
-    for name, model_id in IMAGE_MODELS.items():
-        print(f"[{len(results) + 1}/{len(IMAGE_MODELS)}] Generating with {name}...")
-        result = generate_image(model_id, args.prompt)
-        results[name] = result
-        if isinstance(result, Image.Image):
-            print(f"  ✓ Success")
-        else:
-            print(f"  ✗ {result}")
+    try:
+        for name, model_id in IMAGE_MODELS.items():
+            print(f"[{len(results) + 1}/{len(IMAGE_MODELS)}] Generating with {name}...")
+            result = generate_image(model_id, args.prompt)
+            results[name] = result
+            if isinstance(result, Image.Image):
+                print("  ✓ Success")
+            else:
+                print(f"  ✗ {result}")
+    except AuthError as e:
+        print(f"\n⚠️  {e}")
+        sys.exit(1)
+    except RateLimitError as e:
+        print(f"\n⚠️  {e}")
+        sys.exit(1)
 
-    print("\nDisplaying comparison...")
+    print("\nSaving comparison...")
     display_results(args.prompt, results, args.output)
     print("\nDone!")
 
