@@ -69,6 +69,12 @@ The output is a single image containing all 3 model results side by side, with t
 3. Run all cells — images appear side by side after ~1-2 minutes
 4. Change `PROMPT` to try different styles and subjects
 
+### Option C: Try the live demo on Hugging Face
+
+[![Open in Spaces](https://huggingface.co/datasets/huggingface/badges/resolve/main/open-in-hf-spaces-sm.svg)](https://huggingface.co/spaces/marinedabare/multi-model-image-gen)
+
+No setup, no token needed — just type a prompt and click Submit.
+
 ## Models
 
 | Model | Provider | Strengths |
