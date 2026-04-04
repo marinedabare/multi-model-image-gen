@@ -1,25 +1,13 @@
-# AI Image Style Transfer Pipeline
+# Multi-Model Image Generation
 
-A two-model AI pipeline that analyses a reference image's visual style and generates new images matching that style using multiple image generation models.
+Compare image generation across 3 AI models using the same prompt. See which model produces the best result for your use case.
 
 ## How it works
 
 ```
-Reference image
+Text prompt
     │
     ▼
-┌──────────────────────────┐
-│  Gemini Vision (Google)  │  ← Analyses the image
-│  "Describe this style"   │
-└────────────┬─────────────┘
-             │
-             ▼
-    Style description:
-    "Flat vector illustration,
-     pastel purple and teal,
-     minimal geometric shapes..."
-             │
-             ▼
 ┌──────────────────────────────────────────────────┐
 │              Image Generation Models              │
 │                                                  │
@@ -36,88 +24,102 @@ Reference image
     └──────────┘   └──────────┘   └──────────┘
 ```
 
-The pipeline chains two AI capabilities:
-1. **Vision analysis** (Gemini) — reads the reference image and outputs a detailed style description
-2. **Image generation** (Hugging Face) — uses that description as a prompt to generate new images
-
-This lets you reproduce a visual style without manually writing complex prompts.
+One prompt, three models, side-by-side comparison. All using the free Hugging Face Inference API.
 
 ## Quick start
 
-### 1. Clone the repo
+### Option A: Run locally
 
 ```bash
-git clone https://github.com/marinedabare/ai-image-style-transfer.git
-cd ai-image-style-transfer
-```
+git clone https://github.com/marinedabare/multi-model-image-gen.git
+cd multi-model-image-gen
 
-### 2. Install dependencies
-
-```bash
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
-```
 
-### 3. Get API keys (both are free)
-
-| Service | Get key at | Cost |
-|---------|-----------|------|
-| Google Gemini | [aistudio.google.com/apikey](https://aistudio.google.com/apikey) | Free (1,500 requests/day) |
-| Hugging Face | [huggingface.co/settings/tokens](https://huggingface.co/settings/tokens) | Free (rate-limited) |
-
-### 4. Set up environment
-
-```bash
 cp .env.example .env
-# Edit .env and paste your API keys
+# Edit .env and paste your Hugging Face token
+
+python generate.py "a flat illustration of a merchant reviewing analytics on a tablet"
 ```
 
-### 5. Run
+### Option B: Run in Google Colab (no install needed)
+
+1. Go to [colab.research.google.com](https://colab.research.google.com) and create a new notebook
+2. In **Cell 1**, install dependencies:
+
+```
+!pip install Pillow requests matplotlib
+```
+
+3. In **Cell 2**, paste this code and run it:
+
+```python
+import requests, io, time
+from PIL import Image
+import matplotlib.pyplot as plt
+
+HF_TOKEN = "paste-your-token-here"  # get one free at https://huggingface.co/settings/tokens
+HEADERS = {"Authorization": f"Bearer {HF_TOKEN}"}
+
+PROMPT = "a flat illustration of a merchant reviewing analytics on a tablet, minimal style, pastel colours, no text"
+
+models = {
+    "Stable Diffusion XL": "stabilityai/stable-diffusion-xl-base-1.0",
+    "Flux Schnell": "black-forest-labs/FLUX.1-schnell",
+    "SD 3 Medium": "stabilityai/stable-diffusion-3-medium-diffusers",
+}
+
+def generate(model_id, prompt):
+    url = f"https://router.huggingface.co/hf-inference/models/{model_id}"
+    for _ in range(3):
+        r = requests.post(url, headers=HEADERS, json={"inputs": prompt}, timeout=120)
+        if r.status_code == 200:
+            return Image.open(io.BytesIO(r.content))
+        if r.status_code == 503:
+            time.sleep(r.json().get("estimated_time", 30))
+            continue
+        return None
+    return None
+
+images = {}
+for name, mid in models.items():
+    print(f"Generating with {name}...")
+    images[name] = generate(mid, PROMPT)
+
+valid = {k: v for k, v in images.items() if v is not None}
+fig, axes = plt.subplots(1, len(valid), figsize=(8 * len(valid), 8))
+if len(valid) == 1: axes = [axes]
+for ax, (name, img) in zip(axes, valid.items()):
+    ax.imshow(img)
+    ax.set_title(name, fontsize=16)
+    ax.axis("off")
+plt.tight_layout()
+plt.show()
+```
+
+4. Change `PROMPT` to try different styles and subjects
+
+## Get a free Hugging Face token
+
+1. Go to [huggingface.co/settings/tokens](https://huggingface.co/settings/tokens)
+2. Sign up (free)
+3. Create a new token (read access is enough)
+
+## Usage (local)
 
 ```bash
-# Analyse a reference image and generate new images in its style
-python generate.py --reference my_illustration.png --subject "a merchant checking inventory"
-
-# Or provide a style description manually (no Gemini call needed)
-python generate.py --subject "a coffee shop" --style "flat vector, pastel colours, minimal shapes"
-```
-
-## Usage
-
-```
-python generate.py --reference <image> --subject <what to generate> [--output <file>]
-python generate.py --style <description> --subject <what to generate> [--output <file>]
+python generate.py "your prompt here"
+python generate.py "an isometric coffee shop with warm lighting" --output coffee.png
 ```
 
 | Argument | Required | Description |
 |----------|----------|-------------|
-| `--reference`, `-r` | One of `--reference` or `--style` | Path to reference image (Gemini analyses its style) |
-| `--style` | One of `--reference` or `--style` | Manual style description (skips Gemini) |
-| `--subject`, `-s` | Yes | What the image should depict |
+| `prompt` | Yes | Text description of the image to generate |
 | `--output`, `-o` | No | Output file path (default: `comparison.png`) |
 
-## Examples
-
-### With a reference image
-
-```bash
-python generate.py \
-  --reference examples/reference.png \
-  --subject "a retail store owner serving a customer"
-```
-
-Output: the reference image on top, three generated images below — each from a different model, all matching the reference style.
-
-### Without a reference image
-
-```bash
-python generate.py \
-  --subject "a business owner looking at analytics" \
-  --style "isometric illustration, soft blue and purple tones, clean lines, minimal detail, white background"
-```
-
-## Models used
+## Models
 
 | Model | Provider | Strengths |
 |-------|----------|-----------|
@@ -130,14 +132,9 @@ All models are accessed via the [Hugging Face Inference API](https://huggingface
 ## Tech stack
 
 - **Python 3.11+**
-- **Google Gemini API** — vision model for style analysis
-- **Hugging Face Inference API** — text-to-image generation
+- **Hugging Face Inference API** — text-to-image generation (free)
 - **Pillow** — image processing
 - **matplotlib** — side-by-side comparison display
-
-## Why this architecture?
-
-Free image generation APIs don't accept reference images for style matching. This pipeline works around that limitation by using a vision model to extract the style as text, then using that text as the generation prompt. The result: style transfer using only free APIs.
 
 ## License
 
