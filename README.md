@@ -62,60 +62,11 @@ The output is a single image containing all 3 model results side by side, with t
 
 ### Option B: Run in Google Colab (no install needed)
 
-1. Go to [colab.research.google.com](https://colab.research.google.com) and create a new notebook
-2. In **Cell 1**, install dependencies:
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/marinedabare/multi-model-image-gen/blob/main/notebook.ipynb)
 
-```
-!pip install Pillow requests matplotlib
-```
-
-3. In **Cell 2**, paste this code and run it:
-
-```python
-import requests, io, time
-from PIL import Image
-import matplotlib.pyplot as plt
-
-HF_TOKEN = "paste-your-token-here"  # get one free at https://huggingface.co/settings/tokens
-HEADERS = {"Authorization": f"Bearer {HF_TOKEN}"}
-
-PROMPT = "a flat illustration of a smiling merchant reviewing analytics on a tablet in a retail store, minimal style, no text, no watermark"
-
-models = {
-    "Stable Diffusion XL": "stabilityai/stable-diffusion-xl-base-1.0",
-    "Flux Schnell": "black-forest-labs/FLUX.1-schnell",
-    "SD 3 Medium": "stabilityai/stable-diffusion-3-medium-diffusers",
-}
-
-def generate(model_id, prompt):
-    url = f"https://router.huggingface.co/hf-inference/models/{model_id}"
-    for _ in range(3):
-        r = requests.post(url, headers=HEADERS, json={"inputs": prompt}, timeout=120)
-        if r.status_code == 200:
-            return Image.open(io.BytesIO(r.content))
-        if r.status_code == 503:
-            time.sleep(r.json().get("estimated_time", 30))
-            continue
-        return None
-    return None
-
-images = {}
-for name, mid in models.items():
-    print(f"Generating with {name}...")
-    images[name] = generate(mid, PROMPT)
-
-valid = {k: v for k, v in images.items() if v is not None}
-fig, axes = plt.subplots(1, len(valid), figsize=(8 * len(valid), 8))
-if len(valid) == 1: axes = [axes]
-for ax, (name, img) in zip(axes, valid.items()):
-    ax.imshow(img)
-    ax.set_title(name, fontsize=16)
-    ax.axis("off")
-fig.suptitle(f'Prompt: {PROMPT}', fontsize=18, color="#1a73e8", fontweight="bold", y=1.05)
-plt.tight_layout()
-plt.show()
-```
-
+1. Click the badge above to open the notebook in Colab
+2. Paste your Hugging Face token in the `HF_TOKEN` variable
+3. Run all cells — images appear side by side after ~1-2 minutes
 4. Change `PROMPT` to try different styles and subjects
 
 ## Models
