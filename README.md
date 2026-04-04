@@ -32,7 +32,7 @@ One prompt, three models, side-by-side comparison. All using the free Hugging Fa
 2. Sign up (free)
 3. Create a new token (read access is enough)
 
-## Quick start
+## How to run
 
 ### Option A: Run locally
 
