@@ -8,7 +8,7 @@ sdk_version: 6.11.0
 app_file: app.py
 pinned: false
 license: mit
-short_description: Compare image generation across 3 AI models
+short_description: Compare image generation across 2 AI models
 ---
 
 Check out the configuration reference at https://huggingface.co/docs/hub/spaces-config-reference

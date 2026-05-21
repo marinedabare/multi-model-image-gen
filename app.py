@@ -9,7 +9,6 @@ from PIL import Image
 HF_TOKEN = os.environ.get("HF_TOKEN")
 
 MODELS = {
-    "Stable Diffusion XL": "stabilityai/stable-diffusion-xl-base-1.0",
     "Flux Schnell": "black-forest-labs/FLUX.1-schnell",
     "SD 3 Medium": "stabilityai/stable-diffusion-3-medium-diffusers",
 }
@@ -66,7 +65,7 @@ def generate_all(prompt):
         result = generate_image(model_id, prompt)
         if result == "limit":
             gr.Warning("Free API limit reached. Please try again later.")
-            return [None, None, None]
+            return [None, None]
         results.append(result)
 
     return results
@@ -84,7 +83,7 @@ demo = gr.Interface(
         for name in MODELS
     ],
     title="Multi-Model Image Generation",
-    description="Compare image generation across 3 AI models using the same prompt. All models are free via the Hugging Face Inference API.",
+    description="Compare image generation across 2 AI models using the same prompt. All models are free via the Hugging Face Inference API.",
     examples=[
         ["a flat illustration of a smiling merchant reviewing analytics on a tablet in a retail store, minimal style, no text, no watermark"],
         ["an isometric coffee shop with warm lighting, minimal style, pastel colours"],

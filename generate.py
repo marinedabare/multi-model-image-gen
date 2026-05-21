@@ -1,9 +1,9 @@
 """
 Multi-Model Image Generation
 
-Compare image generation across 3 AI models using the same prompt.
+Compare image generation across 2 AI models using the same prompt.
 Uses the Hugging Face free Inference API to generate images from
-Stable Diffusion XL, Flux Schnell, and SD 3 Medium side by side.
+Flux Schnell and SD 3 Medium side by side.
 """
 
 import io
@@ -21,7 +21,6 @@ load_dotenv()
 HF_TOKEN = os.getenv("HF_TOKEN")
 
 IMAGE_MODELS = {
-    "Stable Diffusion XL": "stabilityai/stable-diffusion-xl-base-1.0",
     "Flux Schnell": "black-forest-labs/FLUX.1-schnell",
     "SD 3 Medium": "stabilityai/stable-diffusion-3-medium-diffusers",
 }
@@ -111,7 +110,7 @@ def main():
     import argparse
 
     parser = argparse.ArgumentParser(
-        description="Generate images with 3 AI models and compare them side by side.",
+        description="Generate images with 2 AI models and compare them side by side.",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:

@@ -1,6 +1,6 @@
 # Multi-Model Image Generation
 
-Compare image generation across 3 AI models using the same prompt. See which model produces the best result for your use case.
+Compare image generation across 2 AI models using the same prompt. See which model produces the best result for your use case.
 
 ## How it works
 
@@ -8,23 +8,23 @@ Compare image generation across 3 AI models using the same prompt. See which mod
 Text prompt
     │
     ▼
-┌──────────────────────────────────────────────────┐
-│              Image Generation Models             │
-│                                                  │
-│  ┌──────────────┐ ┌────────────┐ ┌───────────┐   │
-│  │ Stable       │ │ Flux       │ │ SD 3      │   │
-│  │ Diffusion XL │ │ Schnell    │ │ Medium    │   │
-│  └──────┬───────┘ └─────┬──────┘ └─────┬─────┘   │
-│         │               │              │         │
-└─────────┼───────────────┼──────────────┼─────────┘
-          │               │              │
-          ▼               ▼              ▼
-    ┌──────────┐   ┌──────────┐   ┌──────────┐
-    │ Image 1  │   │ Image 2  │   │ Image 3  │
-    └──────────┘   └──────────┘   └──────────┘
+┌──────────────────────────────────────┐
+│        Image Generation Models      │
+│                                      │
+│  ┌────────────┐    ┌───────────┐     │
+│  │ Flux       │    │ SD 3      │     │
+│  │ Schnell    │    │ Medium    │     │
+│  └─────┬──────┘    └─────┬─────┘     │
+│        │                 │           │
+└────────┼─────────────────┼───────────┘
+         │                 │
+         ▼                 ▼
+   ┌──────────┐      ┌──────────┐
+   │ Image 1  │      │ Image 2  │
+   └──────────┘      └──────────┘
 ```
 
-One prompt, three models, side-by-side comparison. All using the free Hugging Face Inference API.
+One prompt, two models, side-by-side comparison. All using the free Hugging Face Inference API.
 
 ## Get a free Hugging Face token
 
@@ -73,19 +73,18 @@ python generate.py "an isometric coffee shop with warm lighting" --output coffee
 | `prompt` | Yes | Text description of the image to generate |
 | `--output`, `-o` | No | Output file path (default: `comparison.png`) |
 
-The output is a single image containing all 3 model results side by side, with the prompt displayed above.
+The output is a single image containing both model results side by side, with the prompt displayed above.
 
 ## Models
 
 | Model | Provider | Strengths |
 |-------|----------|-----------|
-| [Stable Diffusion XL](https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0) | Stability AI | Good general-purpose, consistent quality |
 | [FLUX.1 Schnell](https://huggingface.co/black-forest-labs/FLUX.1-schnell) | Black Forest Labs | Fast, strong prompt adherence |
 | [Stable Diffusion 3 Medium](https://huggingface.co/stabilityai/stable-diffusion-3-medium-diffusers) | Stability AI | Newer architecture, better text understanding |
 
 All models are accessed via the [Hugging Face Inference API](https://huggingface.co/docs/inference-providers) (free tier).
 
-> **Note:** The free Hugging Face API has a limited number of requests per day (~1,000 requests/day, so ~300 generations since each run calls 3 models). If you hit the limit, wait a few hours and try again.
+> **Note:** The free Hugging Face API has a limited number of requests per day (~1,000 requests/day, so ~500 generations since each run calls 2 models). If you hit the limit, wait a few hours and try again.
 
 ## Tech stack
 
