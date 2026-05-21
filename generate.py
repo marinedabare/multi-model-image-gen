@@ -45,10 +45,21 @@ def generate_image(model_id: str, prompt: str, retries: int = 3) -> Image.Image 
     headers = {"Authorization": f"Bearer {HF_TOKEN}"}
 
     for attempt in range(retries):
-        response = requests.post(url, headers=headers, json={"inputs": prompt}, timeout=120)
+        try:
+            response = requests.post(url, headers=headers, json={"inputs": prompt}, timeout=120)
+        except requests.RequestException as e:
+            return f"Request failed: {e}"
+
+        content_type = response.headers.get("content-type", "unknown")
 
         if response.status_code == 200:
-            return Image.open(io.BytesIO(response.content))
+            if "image" not in content_type:
+                body_preview = response.text[:300]
+                return f"Error: expected image, got {content_type}\n  Body: {body_preview}"
+            try:
+                return Image.open(io.BytesIO(response.content))
+            except Exception as e:
+                return f"Error: failed to decode image ({content_type}, {len(response.content)} bytes): {e}"
 
         if response.status_code == 401:
             raise AuthError("Invalid token. Check your HF_TOKEN in .env file.")
@@ -57,12 +68,16 @@ def generate_image(model_id: str, prompt: str, retries: int = 3) -> Image.Image 
             raise RateLimitError("Free API limit reached. Try again later.")
 
         if response.status_code == 503:
-            wait = response.json().get("estimated_time", 30)
+            try:
+                wait = response.json().get("estimated_time", 30)
+            except Exception:
+                wait = 30
             print(f"  Model loading, waiting {wait:.0f}s (attempt {attempt + 1}/{retries})...")
             time.sleep(wait)
             continue
 
-        return f"Error {response.status_code}: {response.text[:100]}"
+        body_preview = response.text[:500]
+        return f"Error {response.status_code} ({content_type}):\n  {body_preview}"
 
     return "Error: model did not load after retries"
 
